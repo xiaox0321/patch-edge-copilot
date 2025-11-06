@@ -51,15 +51,18 @@ jobs:
           GOROOT_FINAL=/usr/local/go
           GOOS=${{ matrix.goos }}
           GOARCH=${{ matrix.goarch }}
-          go build -ldflags="-s -w" -a -installsuffix cgo .
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            go build -ldflags="-s -w" -o patch-edge-copilot.exe .
+          else
+            go build -ldflags="-s -w" -o patch-edge-copilot .
+          fi
 
       - name: Create dist directory
         run: mkdir -p dist
 
-      - name: Compress binary (optional)
+      - name: Compress binary (Windows)
         if: matrix.goos == 'windows'
         run: |
-          mv patch-edge-copilot.exe patch-edge-copilot.exe
           zip -9 patch-edge-copilot-windows-${{ matrix.goarch }}.zip patch-edge-copilot.exe
           mv patch-edge-copilot-windows-${{ matrix.goarch }}.zip dist/
 
