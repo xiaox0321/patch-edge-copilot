@@ -51,10 +51,11 @@ jobs:
         env:
           CGO_ENABLED: 0
         run: |
-          GINMODE=off
-          GOROOT_FINAL=/usr/local/go
-          GOOS=${{ matrix.goos }}
-          GOARCH=${{ matrix.goarch }}
+          export CGO_ENABLED=0
+          export GINMODE=off
+          export GOROOT_FINAL=/usr/local/go
+          export GOOS=${{ matrix.goos }}
+          export GOARCH=${{ matrix.goarch }}
           if [ "${{ matrix.goos }}" = "windows" ]; then
             go build -ldflags="-s -w" -o patch-edge-copilot.exe .
           else
