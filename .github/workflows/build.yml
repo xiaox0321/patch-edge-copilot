@@ -53,6 +53,9 @@ jobs:
           GOARCH=${{ matrix.goarch }}
           go build -ldflags="-s -w" -a -installsuffix cgo .
 
+      - name: Create dist directory
+        run: mkdir -p dist
+
       - name: Compress binary (optional)
         if: matrix.goos == 'windows'
         run: |
